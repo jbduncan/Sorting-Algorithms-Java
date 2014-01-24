@@ -55,7 +55,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(long[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new LongQuicksortAction(array, lo, hi));
   }
   
@@ -64,7 +64,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(byte[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new ByteQuicksortAction(array, lo, hi));
   }
   
@@ -73,7 +73,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(short[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new ShortQuicksortAction(array, lo, hi));
   }
   
@@ -82,7 +82,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(char[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new CharQuicksortAction(array, lo, hi));
   }
   
@@ -91,7 +91,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(double[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new DoubleQuicksortAction(array, lo, hi));
   }
   
@@ -100,7 +100,7 @@ public class ParallelQuicksort {
   }
   
   public static void sort(float[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new FloatQuicksortAction(array, lo, hi));
   }
   
@@ -109,7 +109,7 @@ public class ParallelQuicksort {
   }
   
   public static <T extends Comparable<? super T>> void sort(T[] array, int lo, int hi) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new ComparableQuicksortAction(array, lo, hi));
   }
   
@@ -118,7 +118,7 @@ public class ParallelQuicksort {
   }
   
   public static <T> void sort(T[] array, int lo, int hi, Comparator<T> c) {
-    checkRange(lo, hi, hi-lo+1);
+    checkRange(lo, hi, array.length);
     mainPool.invoke(new ComparatorQuicksortAction(array, lo, hi, c));
   }
   
