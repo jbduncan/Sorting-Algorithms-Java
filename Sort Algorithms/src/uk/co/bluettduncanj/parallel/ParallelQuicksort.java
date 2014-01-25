@@ -34,11 +34,9 @@ public class ParallelQuicksort {
   // followed by doing a merge step (as in a merge sort) per pair of sorted sub-arrays,
   // using "10. Faster (Unstable) Merge" at http://algs4.cs.princeton.edu/22mergesort/.
   
-  // TODO: Put Sort Algorithms into a Git repo and push to BitBucket.
-  
   private static final ForkJoinPool mainPool = new ForkJoinPool();
   
-  // Prevents instantiation
+  // Prevent instantiation
   private ParallelQuicksort() {};
   
   public static void sort(int[] array) {
@@ -122,7 +120,21 @@ public class ParallelQuicksort {
     mainPool.invoke(new ComparatorQuicksortAction(array, lo, hi, c));
   }
   
-  private static void checkRange(int lo, int hi, int length) {
+  /**
+   * Checks that <tt>lo</tt> and <tt>hi</tt> are valid indices for a particular collection with 0-based indexing.
+   * 
+   * @param lo
+   *          Index to sort from.
+   * @param hi
+   *          Index to sort to.
+   * @param length
+   *          Size of collection to be sorted, which is assumed to have 0-based indexing.
+   * @throws IllegalArgumentException if lo > hi.
+   * @throws ArrayIndexOutOfBoundsException if lo < 0 or hi >= length.
+   */
+  private static void checkRange(int lo, int hi, int length) 
+      throws IllegalArgumentException, ArrayIndexOutOfBoundsException {
+    
     if (lo > hi) {
       throw new IllegalArgumentException("lo(" + lo + ") > hi(" + hi + ")");
     }

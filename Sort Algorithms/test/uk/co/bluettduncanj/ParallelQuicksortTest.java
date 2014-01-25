@@ -4,6 +4,8 @@
 
 package uk.co.bluettduncanj;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,6 +36,8 @@ public class ParallelQuicksortTest {
   private double[] doubleArr;
   private float[] floatArr;
   private String[] strArr;
+  private BigInteger[] bIntArr;
+  private BigDecimal[] bDecArr;
   private DummyObject[] dummyArr;
   private long start, end;
 

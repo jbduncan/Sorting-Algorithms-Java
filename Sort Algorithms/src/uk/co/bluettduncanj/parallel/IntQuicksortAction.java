@@ -19,25 +19,23 @@ public class IntQuicksortAction extends RecursiveAction {
   /** serialVersionUID */
   private static final long serialVersionUID = -8148918232918180414L;
   
-  /** The array of integers to sort */
   private int[] array;
-  
-  private int start;
-  private int end;
+  private int lo;
+  private int hi;
   
   /**
    * Public <tt>IntQuicksortAction</tt> constructor.
    * 
-   * @param array
+   * @param <tt>array</tt>
    *          The array of integers to sort.
-   * @param start
+   * @param <tt>lo</tt>
    *          The index in <tt>array</tt> to sort from.
-   * @param end
+   * @param <tt>hi</tt>
    *          The index in <tt>array</tt> to sort to.
    */
-  public IntQuicksortAction(int array[], int start, int end) {
-    this.start = start;
-    this.end = end;
+  public IntQuicksortAction(int array[], int lo, int hi) {
+    this.lo = lo;
+    this.hi = hi;
     this.array = array;
   }
   
@@ -50,48 +48,42 @@ public class IntQuicksortAction extends RecursiveAction {
    */
   @Override
   protected void compute() {
-    int length = end - start + 1;
-    boolean sorted = (length <= 1);
-    
-    if (sorted)
-      return;
+    int length = hi - lo + 1;
     
     // Use insertion sort if array is very small
     if (length <= 7) {
-      insertionSort(start, end);
+      insertionSort(lo, hi);
       return;
     }
     
-    // Use median of start, mid and end elements as pivot for small-ish arrays
+    // Use median of lo, mid and hi elements as pivot for small-ish arrays
     else if (length <= 40) {
-      int mid = start + (length / 2);
-      int pivot = median3(start, mid, end);
-      
-      // Swap pivot to start of sub-array
-      swap(start, pivot);
+      int mid = lo + (length / 2);
+      int pivot = median3(lo, mid, hi);
+      swap(lo, pivot);
     }
     
     // Use "Tukey's ninther" as pivot for large arrays
     else {
       int eps = length / 8;
-      int mid = start + (length / 2);
-      int med1 = median3(start, start + eps, start + eps + eps);
+      int mid = lo + (length / 2);
+      int med1 = median3(lo, lo + eps, lo + eps + eps);
       int med2 = median3(mid - 1, mid, mid + 1);
-      int med3 = median3(end - eps - eps, end - eps, end);
+      int med3 = median3(hi - eps - eps, hi - eps, hi);
       int pivotIndex = median3(med1, med2, med3); // Tukey's ninther
-      swap(start, pivotIndex);
+      swap(lo, pivotIndex);
     }
     
     // 3-way partition using the Bentley-McIlroy method
-    int i = start, j = end + 1, p = start, q = j;
+    int i = lo, j = hi + 1, p = lo, q = j;
     while (true) {
-      int pivot = array[start];
+      int pivot = array[lo];
       while (array[++i] < pivot) {
-        if (i == end) 
+        if (i == hi) 
           break;
       }
       while (pivot < array[--j]) {
-        if (j == start) 
+        if (j == lo) 
           break;
       }
       if (i >= j) 
@@ -102,18 +94,18 @@ public class IntQuicksortAction extends RecursiveAction {
       if (array[j] == pivot)
         swap(--q, j);
     }
-    swap(start, j);
+    swap(lo, j);
     
     i = j + 1;
     j--;
-    for (int k = start + 1; k <= p; k++)
+    for (int k = lo + 1; k <= p; k++)
       swap(k, j--);
-    for (int k = end; k >= q; k--)
+    for (int k = hi; k >= q; k--)
       swap(k, i++);
     
     // Recursively quicksort in parallel the two partitions not equal to the pivot
-    IntQuicksortAction left = new IntQuicksortAction(array, start, j);
-    IntQuicksortAction right = new IntQuicksortAction(array, i, end);
+    IntQuicksortAction left  = new IntQuicksortAction(array, lo, j);
+    IntQuicksortAction right = new IntQuicksortAction(array, i, hi);
     left.fork();
     right.compute();
     left.join();
@@ -122,26 +114,24 @@ public class IntQuicksortAction extends RecursiveAction {
   /**
    * Insertion sort - Used on 'sufficiently small' (sub-)arrays.
    * 
-   * Sorts a range of values between two inclusive indexes (start and end) within the array of integers.
+   * Sorts a range of values between two inclusive indexes (<tt>lo</tt> and <tt>hi</tt>) within the array of integers.
    * 
    * This implementation uses the half-exchanges and sentinel approach for optimised sorting.
    * 
-   * @param start
-   *          First index of range of values to sort.
-   * @param end
-   *          Last index of range of values to sort.
+   * @param lo
+   *          The index <tt>array</tt> to sort from.
+   * @param hi
+   *          The index <tt>array</tt> to sort to.
    */
-  private void insertionSort(int start, int end) {
+  private void insertionSort(int lo, int hi) {
     
-    int len = end - start + 1;
-
     // Put smallest element in position to serve as sentinel
-    for (int i = end; i > start; i--)
+    for (int i = hi; i > lo; i--)
       if (array[i] < array[i-1]) 
         swap(i, i - 1);
 
     // Insertion sort with half-exchanges
-    for (int i = start + 2; i < start + len; i++) {
+    for (int i = lo + 2; i <= hi; i++) {
       int value = array[i];
       int j = i;
       while (value < array[j-1]) {
@@ -153,12 +143,12 @@ public class IntQuicksortAction extends RecursiveAction {
   }
   
   /**
-   * Swap elements at two indexes in the array.
+   * Swap elements at two indices in <tt>array</tt>.
    * 
    * @param i 
-   *          The index of the first element to swap.
+   *          The index of the first element.
    * @param j 
-   *          The index of the second element to swap.
+   *          The index of the second element.
    */
   private void swap(int i, int j) {
     int tmp = array[i];
@@ -167,7 +157,7 @@ public class IntQuicksortAction extends RecursiveAction {
   }
 
   /**
-   * Finds the median of values at three given indexes in the array, and returns the index of the median.
+   * Finds the median of values at three given indices in <tt>array</tt>, and returns the index of the median.
    * 
    * @param a 
    *          The first index.
@@ -176,7 +166,7 @@ public class IntQuicksortAction extends RecursiveAction {
    * @param c 
    *          The third index.
    * 
-   * @return the index of the median.
+   * @return the position of the median of elements in <tt>array</tt> at positions <tt>a</tt>, <tt>b</tt> and <tt>c</tt>.
    */
   private int median3(int a, int b, int c) {
     if (array[a] > array[b]) {
