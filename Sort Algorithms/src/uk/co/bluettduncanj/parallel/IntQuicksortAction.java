@@ -8,7 +8,7 @@ import java.util.concurrent.RecursiveAction;
 
 
 /**
- * A <tt>RecursiveAction</tt> implementation for quicksorting <tt>int</tt> arrays in <tt>ParallelQuicksort</tt>.
+ * An implementation of <tt>RecursiveAction</tt> for quicksorting <tt>int</tt> arrays, used by <tt>ParallelQuicksort</tt>.
  * 
  * @since 1.7
  * 
@@ -51,13 +51,13 @@ public class IntQuicksortAction extends RecursiveAction {
     int length = hi - lo + 1;
     
     // Use insertion sort if array is very small
-    if (length <= 7) {
+    if (length <= ParallelQuicksort.INSERTION_SORT_CUTOFF) {
       insertionSort(lo, hi);
       return;
     }
     
     // Use median of lo, mid and hi elements as pivot for small-ish arrays
-    else if (length <= 40) {
+    else if (length <= ParallelQuicksort.SIMPLE_MEDIAN3_CUTOFF) {
       int mid = lo + (length / 2);
       int pivot = median3(lo, mid, hi);
       swap(lo, pivot);
@@ -103,12 +103,78 @@ public class IntQuicksortAction extends RecursiveAction {
     for (int k = hi; k >= q; k--)
       swap(k, i++);
     
-    // Recursively quicksort in parallel the two partitions not equal to the pivot
-    IntQuicksortAction left  = new IntQuicksortAction(array, lo, j);
-    IntQuicksortAction right = new IntQuicksortAction(array, i, hi);
-    left.fork();
-    right.compute();
-    left.join();
+    // Recursively quicksort the two partitions not equal to the pivot...
+    if (length <= ParallelQuicksort.SEQUENTIAL_CUTOFF) { // ...sequentially if array is small
+      sortSequentially(array, lo, j);
+      sortSequentially(array, i, hi);
+    } else { // ...in parallel if array is large
+      IntQuicksortAction left  = new IntQuicksortAction(array, lo, j);
+      IntQuicksortAction right = new IntQuicksortAction(array, i, hi);
+      left.fork(); 
+      right.compute();
+      left.join();
+    }
+  }
+  
+  private void sortSequentially(int[] array, int lo, int hi) {
+    int length = hi - lo + 1;
+    
+    // Use insertion sort if array is very small
+    if (length <= ParallelQuicksort.INSERTION_SORT_CUTOFF) {
+      insertionSort(lo, hi);
+      return;
+    }
+    
+    // Use median of lo, mid and hi elements as pivot for small-ish arrays
+    else if (length <= ParallelQuicksort.SIMPLE_MEDIAN3_CUTOFF) {
+      int mid = lo + (length / 2);
+      int pivot = median3(lo, mid, hi);
+      swap(lo, pivot);
+    }
+    
+    // Use "Tukey's ninther" as pivot for large arrays
+    else {
+      int eps = length / 8;
+      int mid = lo + (length / 2);
+      int med1 = median3(lo, lo + eps, lo + eps + eps);
+      int med2 = median3(mid - 1, mid, mid + 1);
+      int med3 = median3(hi - eps - eps, hi - eps, hi);
+      int pivotIndex = median3(med1, med2, med3); // Tukey's ninther
+      swap(lo, pivotIndex);
+    }
+    
+    // 3-way partition using the Bentley-McIlroy method
+    int i = lo, j = hi + 1, p = lo, q = j;
+    while (true) {
+      int pivot = array[lo];
+      while (array[++i] < pivot) {
+        if (i == hi) 
+          break;
+      }
+      while (pivot < array[--j]) {
+        if (j == lo) 
+          break;
+      }
+      if (i >= j) 
+        break;
+      swap(i, j);
+      if (array[i] == pivot)
+        swap(++p, i);
+      if (array[j] == pivot)
+        swap(--q, j);
+    }
+    swap(lo, j);
+    
+    i = j + 1;
+    j--;
+    for (int k = lo + 1; k <= p; k++)
+      swap(k, j--);
+    for (int k = hi; k >= q; k--)
+      swap(k, i++);
+    
+    // Recursively sort in a sequential manner
+    sortSequentially(array, lo, j);
+    sortSequentially(array, i, hi);
   }
   
   /**

@@ -1,5 +1,5 @@
 /**
- * QuicksortThreadedTest.java
+ * ParallelQuicksortTest.java
  */
 
 package uk.co.bluettduncanj;
@@ -26,8 +26,8 @@ import uk.co.bluettduncanj.parallel.ParallelQuicksort;
 public class ParallelQuicksortTest {
   
   private Random r = new Random();
-  public static final int arrSize  = 10000000  /* 3000 */;
-  public static final int intRange =    20000    /* 10 */;
+  public static final int arrSize  = 10000000  /* 30 */;
+  public static final int intRange =    20000  /* 10 */;
   private int[] intArr;
   private long[] longArr;
   private short[] shortArr;

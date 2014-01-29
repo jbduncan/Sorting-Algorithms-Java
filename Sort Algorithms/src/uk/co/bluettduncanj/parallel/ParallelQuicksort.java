@@ -4,12 +4,6 @@
 
 package uk.co.bluettduncanj.parallel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.ForkJoinPool;
 
 
@@ -29,12 +23,26 @@ import java.util.concurrent.ForkJoinPool;
  */
 public class ParallelQuicksort {
   
-  // TODO: Experiment by creating a new implementation that does in parallel a sequential quicksort on each of
-  // min(array size, ForkJoinPool parallelism size) parts of the array,
-  // followed by doing a merge step (as in a merge sort) per pair of sorted sub-arrays,
-  // using "10. Faster (Unstable) Merge" at http://algs4.cs.princeton.edu/22mergesort/.
+  // TODO: Improve general QuicksortAction implementations, e.g. IntQuicksortAction, by following good practices under the online
+  // lectures for 'Sophomoric Parallelism and Concurrency' @ http://homes.cs.washington.edu/~djg/teachingMaterials/spac/,
+  // particularly lectures on 'Introduction to Multithreading and Fork-Join Parallelism' and 'Parallel Prefix, Pack and Sorting'.
+  //
+  // Be especially on the look out for information on sequential cutoffs and any potentially useful info to do with
+  // parallel prefix and sorting.
   
-  private static final ForkJoinPool mainPool = new ForkJoinPool();
+  // TODO: Look for a parallelism library for Java, and experiment with creating an implementation using that.
+  
+  // TODO: Experiment by creating a new implementation that does in parallel a sequential quicksort on each of
+  // min(array size OR sequential cutoff, ForkJoinPool parallelism size OR Java 8 Arrays.parallelSort granularity size) 
+  // parts of the array, followed by doing a single merge step (as in a merge sort) for all sorted sub-arrays,
+  // using "10. Faster (Unstable) Merge" at http://algs4.cs.princeton.edu/22mergesort/, or a merge that only uses
+  // a half-size array (if possible without much effort), or both.
+  
+  private static final ForkJoinPool sortPool    = new ForkJoinPool();
+  
+  public static final int INSERTION_SORT_CUTOFF =   7;
+  public static final int SIMPLE_MEDIAN3_CUTOFF =  40;
+  public static final int SEQUENTIAL_CUTOFF     = 500;
   
   // Prevent instantiation
   private ParallelQuicksort() {};
@@ -45,16 +53,17 @@ public class ParallelQuicksort {
   
   public static void sort(int[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new IntQuicksortAction(array, lo, hi));
+    sortPool.invoke(new IntQuicksortAction(array, lo, hi));
   }
   
+  /*
   public static void sort(long[] array) {
     sort(array, 0, array.length-1);
   }
   
   public static void sort(long[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new LongQuicksortAction(array, lo, hi));
+    sortPool.invoke(new LongQuicksortAction(array, lo, hi));
   }
   
   public static void sort(byte[] array) {
@@ -63,7 +72,7 @@ public class ParallelQuicksort {
   
   public static void sort(byte[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new ByteQuicksortAction(array, lo, hi));
+    sortPool.invoke(new ByteQuicksortAction(array, lo, hi));
   }
   
   public static void sort(short[] array) {
@@ -72,7 +81,7 @@ public class ParallelQuicksort {
   
   public static void sort(short[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new ShortQuicksortAction(array, lo, hi));
+    sortPool.invoke(new ShortQuicksortAction(array, lo, hi));
   }
   
   public static void sort(char[] array) {
@@ -81,7 +90,7 @@ public class ParallelQuicksort {
   
   public static void sort(char[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new CharQuicksortAction(array, lo, hi));
+    sortPool.invoke(new CharQuicksortAction(array, lo, hi));
   }
   
   public static void sort(double[] array) {
@@ -90,7 +99,7 @@ public class ParallelQuicksort {
   
   public static void sort(double[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new DoubleQuicksortAction(array, lo, hi));
+    sortPool.invoke(new DoubleQuicksortAction(array, lo, hi));
   }
   
   public static void sort(float[] array) {
@@ -99,7 +108,7 @@ public class ParallelQuicksort {
   
   public static void sort(float[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new FloatQuicksortAction(array, lo, hi));
+    sortPool.invoke(new FloatQuicksortAction(array, lo, hi));
   }
   
   public static <T extends Comparable<? super T>> void sort(T[] array) {
@@ -108,7 +117,7 @@ public class ParallelQuicksort {
   
   public static <T extends Comparable<? super T>> void sort(T[] array, int lo, int hi) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new ComparableQuicksortAction(array, lo, hi));
+    sortPool.invoke(new ComparableQuicksortAction(array, lo, hi));
   }
   
   public static <T> void sort(T[] array, Comparator<T> c) {
@@ -117,8 +126,9 @@ public class ParallelQuicksort {
   
   public static <T> void sort(T[] array, int lo, int hi, Comparator<T> c) {
     checkRange(lo, hi, array.length);
-    mainPool.invoke(new ComparatorQuicksortAction(array, lo, hi, c));
+    sortPool.invoke(new ComparatorQuicksortAction(array, lo, hi, c));
   }
+  */
   
   /**
    * Checks that <tt>lo</tt> and <tt>hi</tt> are valid indices for a particular collection with 0-based indexing.
