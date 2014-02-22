@@ -104,10 +104,10 @@ public class IntQuicksortAction extends RecursiveAction {
       swap(k, i++);
     
     // Recursively quicksort the two partitions not equal to the pivot...
-    if (length <= ParallelQuicksort.SEQUENTIAL_CUTOFF) { // ...sequentially if array is small
+    if (length <= ParallelQuicksort.SEQUENTIAL_CUTOFF) {                  // ...sequentially if array is small
       sortSequentially(array, lo, j);
       sortSequentially(array, i, hi);
-    } else { // ...in parallel if array is large
+    } else {                                                              // ...in parallel if array is large
       IntQuicksortAction left  = new IntQuicksortAction(array, lo, j);
       IntQuicksortAction right = new IntQuicksortAction(array, i, hi);
       left.fork(); 

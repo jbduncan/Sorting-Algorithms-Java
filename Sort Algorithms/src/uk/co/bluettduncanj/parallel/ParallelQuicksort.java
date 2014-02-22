@@ -40,11 +40,13 @@ public class ParallelQuicksort {
   
   private static final ForkJoinPool sortPool    = new ForkJoinPool();
   
-  public static final int INSERTION_SORT_CUTOFF =   7;
-  public static final int SIMPLE_MEDIAN3_CUTOFF =  40;
-  public static final int SEQUENTIAL_CUTOFF     = 500;
+  public static final int INSERTION_SORT_CUTOFF =    7;
+  public static final int SIMPLE_MEDIAN3_CUTOFF =   40;
+  public static final int SEQUENTIAL_CUTOFF     = 2048;
   
-  // Prevent instantiation
+  /*
+   * Private constructor - prevent instantiation.
+   */
   private ParallelQuicksort() {};
   
   public static void sort(int[] array) {
