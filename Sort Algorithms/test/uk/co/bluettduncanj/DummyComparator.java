@@ -9,7 +9,6 @@ import java.util.Comparator;
 
 /**
  * @author Jonathan
- * @param <T>
  */
 public class DummyComparator implements Comparator<DummyObject> {
 

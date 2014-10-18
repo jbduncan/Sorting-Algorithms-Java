@@ -6,7 +6,6 @@ package uk.co.bluettduncanj.serial;
 
 import java.util.List;
 
-
 /**
  * Based on implementation at 
  * <a href="http://algs4.cs.princeton.edu/24pq/Heap.java.html">http://algs4.cs.princeton.edu/24pq/Heap.java.html</a>.
