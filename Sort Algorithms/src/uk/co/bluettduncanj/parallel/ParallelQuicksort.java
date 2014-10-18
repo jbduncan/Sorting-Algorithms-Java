@@ -21,6 +21,7 @@ import java.util.concurrent.ForkJoinPool;
  * 
  * @author Jonathan Bluett-Duncan
  */
+@Deprecated
 public class ParallelQuicksort {
   
   // TODO: Improve general QuicksortAction implementations, e.g. IntQuicksortAction, by following good practices under the online

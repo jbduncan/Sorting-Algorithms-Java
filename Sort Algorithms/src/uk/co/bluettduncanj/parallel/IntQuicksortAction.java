@@ -14,6 +14,7 @@ import java.util.concurrent.RecursiveAction;
  * 
  * @author Jonathan Bluett-Duncan
  */
+@Deprecated
 public class IntQuicksortAction extends RecursiveAction {
 
   /** serialVersionUID */

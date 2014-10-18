@@ -22,8 +22,8 @@ public class Quicksort3WayTest {
   
   private Random r;
   private int[] array;
-  public static int arrSize = 3000000;
-  public static int range  = 10000;
+  public static final int arrSize = 3000000;
+  public static final int range  = 10000;
   private long start, end;
 
   /**
@@ -67,11 +67,11 @@ public class Quicksort3WayTest {
   }
   
   private static String print(int[] array) {
-    String print = "";
+    StringBuilder printBuilder = new StringBuilder(array.length);
     for (int element : array) {
-      print = print + element + " ";
+      printBuilder.append(element).append(" ");
     }
-    return print;
+    return printBuilder.toString();
   }
 
 }

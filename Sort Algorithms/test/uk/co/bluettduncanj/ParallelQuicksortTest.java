@@ -276,11 +276,11 @@ public class ParallelQuicksortTest {
   }
   
   private static String show(int[] array) {
-    String result = "";
+    StringBuilder printBuilder = new StringBuilder(array.length);
     for (int element : array) {
-      result += element + " ";
+      printBuilder.append(element).append(" ");
     }
-    return result;
+    return printBuilder.toString();
   }
 
   private static boolean isSorted(int[] array) {

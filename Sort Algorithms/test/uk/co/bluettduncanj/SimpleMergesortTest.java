@@ -31,8 +31,8 @@ public class SimpleMergesortTest {
   private static Integer[] array;
   private ArrayList<Integer> arrayList;
   private LinkedList<Integer> linkedList;
-  public static int arrSize = 30000 /* 5 */;
-  public static int range  = 1000 /* 10 */;
+  public static final int arrSize = 30000 /* 5 */;
+  public static final int range  = 1000 /* 10 */;
   private long start, end;
   
   /**
@@ -128,11 +128,11 @@ public class SimpleMergesortTest {
   }
   
   private static <T> String print(List<T> list) {
-    String print = "";
-    for (T element : list) {
-      print = print + element.toString() + " ";
+    StringBuilder printBuilder = new StringBuilder(array.length);
+    for (int element : array) {
+      printBuilder.append(element).append(" ");
     }
-    return print;
+    return printBuilder.toString();
   }
 
   private static <T extends Comparable<T>> boolean isSorted(List<T> list) {

@@ -4,13 +4,14 @@
 
 package uk.co.bluettduncanj;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 
 /**
  * @author Jonathan
  */
-public class DummyComparator implements Comparator<DummyObject> {
+public class DummyComparator implements Comparator<DummyObject>, Serializable {
 
   /**
    * @param o1

@@ -22,8 +22,8 @@ public class QuicksortBentleyMcIlroyTest {
   
   private Random r;
   private int[] array;
-  public static int arrSize = 10000000 /* 30 */;
-  public static int range  =  10000    /* 10 */;
+  public static final int arrSize = 10000000 /* 30 */;
+  public static final int range  =  10000    /* 10 */;
   private long start, end;
 
   /**
@@ -71,11 +71,11 @@ public class QuicksortBentleyMcIlroyTest {
   }
   
   private static String print(int[] array) {
-    String print = "";
+    StringBuilder printBuilder = new StringBuilder(array.length);
     for (int element : array) {
-      print = print + element + " ";
+      printBuilder.append(element).append(" ");
     }
-    return print;
+    return printBuilder.toString();
   }
 
   private static boolean isSorted(int[] array) {
