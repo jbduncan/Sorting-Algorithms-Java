@@ -13,8 +13,8 @@ package uk.co.bluettduncanj.serial;
  * since for such data sizes it works faster (and is easier to program) than popular O(N*logN) algorithms e.g. quicksort, heapsort and
  * mergesort.</p>
  * 
- * <p>It should be noted that practical implementations of bubble sort are generally significantly slower than practical
- * implementations of insertion sort. Therefore {@code InsertionSort.java} should be preferred over {@code BubbleSort.java}.</p>
+ * <p>It should be noted that implementations of bubble sort are generally slower than mplementations of insertion sort. Therefore
+ * {@code InsertionSort.java} should be preferred over {@code BubbleSort.java}.</p>
  * 
  * @author Jonathan Bluett-Duncan
  */
@@ -28,7 +28,7 @@ public class BubbleSort {
   /**
    * A convenience method for bubbleSort(int[] array, int start, int end) that sorts an entire array of primitive integers.
    * 
-   * @param array: An int-type array to sort.
+   * @param array an int-type array to sort.
    */
   public static void bubbleSort(int[] array) {
     bubbleSort(array, 0, array.length-1);
@@ -37,9 +37,9 @@ public class BubbleSort {
   /**
    * Sorts a range of values between two inclusive indexes (start and end) within an array of primitive integers.
    * 
-   * @param array An int-type array to act upon.
-   * @param start The beginning index of the range of values to sort.
-   * @param end The finishing index of the range of values to sort.
+   * @param array an int-type array to act upon.
+   * @param start the beginning index of the range of values to sort.
+   * @param end the finishing index of the range of values to sort.
    */
   public static void bubbleSort(int[] array, int start, int end)  {
     boolean sorted = false;
