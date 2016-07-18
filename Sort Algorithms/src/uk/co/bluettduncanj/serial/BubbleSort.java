@@ -18,7 +18,7 @@ package uk.co.bluettduncanj.serial;
  * 
  * @author Jonathan Bluett-Duncan
  */
-public class BubbleSort {
+public final class BubbleSort {
   
   /**
    * Private constructor. Prevents instantiation of BubbleSort class.
