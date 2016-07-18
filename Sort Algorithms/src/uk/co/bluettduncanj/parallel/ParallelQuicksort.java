@@ -17,6 +17,9 @@ import java.util.concurrent.ForkJoinPool;
  * as outlined in their journal article <i>Engineering a sort function</i>.
  * </p>
  * 
+ * <p>However, it should be noted that this class in its current state actually runs slower than I'd expect it to. It's probably
+ * due to a mistake on my part, so please don't actually use this class in any production code!</p>
+ * 
  * @since 1.7
  * 
  * @author Jonathan Bluett-Duncan
