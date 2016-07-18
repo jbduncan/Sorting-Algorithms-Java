@@ -10,15 +10,15 @@ import java.util.List;
  * Based on implementation at 
  * <a href="http://algs4.cs.princeton.edu/24pq/Heap.java.html">http://algs4.cs.princeton.edu/24pq/Heap.java.html</a>.
  * 
- * @author Jonathan
+ * @author Jonathan Bluett-Duncan
  */
-public class HeapSort2 {
+public final class HeapSort2 {
 
   private HeapSort2() {}
   
   public static <T extends Comparable<T>> void sort(List<T> list) {
     int n = list.size();
-    for (int i = n/2; i >= 1; i--) {
+    for (int i = n / 2; i >= 1; i--) {
       sink(list, i, n);
     }
     while (n > 1) {
@@ -28,26 +28,23 @@ public class HeapSort2 {
   }
   
   private static <T extends Comparable<T>> void sink(List<T> list, int i, int n) {
-    while (2*i <= n) {
-      int j = 2*i;
-      if (j < n && less(list, j, j+1))
+    while (2 * i <= n) {
+      int j = 2 * i;
+      if (j < n && less(list, j, j + 1)) {
         j++;
-      if (!less(list, i, j))
+      }
+      if (!less(list, i, j)) {
         break;
+      }
       swap(list, i, j);
       i = j;
     }
   }
   
   /**
-   * A comparison function that checks whether list.get(i-1) is less than list.get(j-1).
+   * A comparison function that checks whether {@code list.get(i - 1)} is less than {@code list.get(j-1)}.
    * 
    * Indices are "off-by-one" to support 1-based indexing.
-   * 
-   * @param list
-   * @param i
-   * @param j
-   * @return
    */
   private static <T extends Comparable<T>> boolean less(List<T> list, int i, int j) {
     return list.get(i-1).compareTo(list.get(j-1)) < 0;
@@ -55,10 +52,6 @@ public class HeapSort2 {
   
   /**
    * A swap function. Indices are "off-by-one" to support 1-based indexing.
-   * 
-   * @param list
-   * @param i
-   * @param j
    */
   private static <T extends Comparable<T>> void swap(List<T> list, int i, int j) {
     T tmp = list.get(i-1);
