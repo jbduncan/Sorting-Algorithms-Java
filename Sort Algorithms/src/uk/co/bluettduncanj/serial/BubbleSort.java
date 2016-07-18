@@ -9,14 +9,14 @@ package uk.co.bluettduncanj.serial;
  * <p>A sorting class based on the bubble sort algorithm.</p>
  * 
  * <p>For most data sets, bubble sort has (Big Oh notation) O(N<sup>2</sup>) efficiency. However, for nearly-sorted and already-sorted
- * data sets, it speeds up (adapts) to O(N) efficiency. It is also a sufficient algorithm for sufficiently small data sets, 
- * since for such data sizes it works faster, and it is easier to program, than popular O(NlogN)) efficiency algorithms 
- * e.g. quicksort, heapsort and mergesort.</p>
+ * data sets, it speeds up (adapts) to O(N) efficiency. It is also a sufficient sorting algorithm for relatively small data sets, 
+ * since for such data sizes it works faster (and is easier to program) than popular O(N*logN) algorithms e.g. quicksort, heapsort and
+ * mergesort.</p>
  * 
  * <p>It should be noted that practical implementations of bubble sort are generally significantly slower than practical
- * implementations of insertion sort. Therefore InsertionSort.java should be preferred over BubbleSort.java.</p>
+ * implementations of insertion sort. Therefore {@code InsertionSort.java} should be preferred over {@code BubbleSort.java}.</p>
  * 
- * @author Jonathan
+ * @author Jonathan Bluett-Duncan
  */
 public class BubbleSort {
   
@@ -47,12 +47,12 @@ public class BubbleSort {
       sorted = true;
       // Ripple
       for (int j = end; j > i; j--) {
-        if (array[j-1] > array[j]) {
+        if (array[j - 1] > array[j]) {
           sorted = false;
           // Swap
           int tmp = array[j];
-          array[j] = array[j-1];
-          array[j-1] = tmp;
+          array[j] = array[j - 1];
+          array[j - 1] = tmp;
         }
       }
     }
