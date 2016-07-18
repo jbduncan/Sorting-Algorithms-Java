@@ -9,13 +9,13 @@ package uk.co.bluettduncanj.serial;
  * <p>A sorting class based on the insertion sort algorithm.</p>
  * 
  * <p>For most data sets, insertion sort has (Big Oh notation) O(N<sup>2</sup>) efficiency. However, for nearly-sorted data sets and
- * already-sorted data sets, it speeds up (adapts) to O(N) efficiency. It is also a sufficient algorithm for sufficiently small 
- * data sets, since for such data sizes it works faster, and it is easier to program, than popular O(NlogN) efficiency 
- * algorithms e.g. quicksort, heapsort and mergesort.</p>
+ * already-sorted data sets, it speeds up (adapts) to O(N) efficiency. It is also a good algorithm for sufficiently small 
+ * datasets, since it works faster on datasets of a small size (and it also happens to be easier to program than popular O(N*logN) 
+ * algorithms like quicksort, heapsort and mergesort).</p>
  * 
- * @author Jonathan
+ * @author Jonathan Bluett-Duncan
  */
-public class InsertionSort {
+public final class InsertionSort {
   
   /**
    * Private constructor. Prevents instantiation of InsertionSort class.
@@ -28,7 +28,7 @@ public class InsertionSort {
    * @param array An int-type array to sort.
    */
   public static void insertionSort(int[] array) {
-    insertionSort(array, 0, array.length-1);
+    insertionSort(array, 0, array.length - 1);
   }
   
   /**
@@ -44,8 +44,8 @@ public class InsertionSort {
       for (int j = i; j > start && array[j] < array[j-1]; j--) {
         // Swap
         int temp = array[j];
-        array[j] = array[j-1];
-        array[j-1] = temp;
+        array[j] = array[j - 1];
+        array[j - 1] = temp;
       }
     } 
   }
